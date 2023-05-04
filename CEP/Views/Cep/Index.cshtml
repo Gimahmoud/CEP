@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Consulta de CEP</title>
+</head>
+<body>
+    <h1>Consulta de CEP</h1>
+    <input type="text" id="cep" placeholder="Digite o CEP">
+    <button onclick="consultarCEP()">Consultar</button>
+    <button onclick="deleteCEP()">Delete</button>
+    <br><br>
+    <p><strong>Logradouro:</strong> <span id="logradouro"></span></p>
+    <p><strong>Bairro:</strong> <span id="bairro"></span></p>
+    <p><strong>Cidade:</strong> <span id="cidade"></span></p>
+    <p><strong>Estado:</strong> <span id="estado"></span></p>
+    <p>
+
+    <script>
+        async function consultarCEP() {
+            const cep = document.getElementById('cep').value;
+            const response = await fetch(`http://localhost:5131/get-endereco/${cep}`);
+            const data = await response.json();
+            if (data.cep) {
+                document.getElementById('logradouro').innerHTML = data.logradouro;
+                document.getElementById('bairro').innerHTML = data.bairro;
+                document.getElementById('cidade').innerHTML = data.localidade;
+                document.getElementById('estado').innerHTML = data.uf;
+            } else {
+                alert('CEP não encontrado');
+            }
+        }
+        async function deleteCEP() {
+            const cep = document.getElementById('cep').value;
+            const response = await fetch(`http://localhost:5131/delete-endereco/${cep}`);
+            alert('Deletado com sucesso')
+            
+
+        }
+    </script>
+</body>
+</html>
